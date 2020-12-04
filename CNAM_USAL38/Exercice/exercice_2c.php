@@ -2,7 +2,10 @@
 
 function getMulti(float $x, $y) {
 $result = ($x * $y);
-return $result;
+$resultarondi = $result*100;
+$resultarondi = round($resultarondi);
+$resultarondi = $resultarondi/100;
+return $resultarondi;
 }
 
 echo getMulti (5.6, 3)."\n"; // retourne 16.8
