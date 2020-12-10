@@ -3,12 +3,14 @@ USE usal37_agence;
 SELECT * FROM cities; 
 SELECT * FROM countries;
 
+SELECT * FROM trips WHERE trip_start > '2020-05-01';
+
 /* VILLES + PAYS */
 
 -- SELECT city_name, cities.country_code country_name FROM cities,countries;
 
 /* Afficher les villes avec le nom du pays associé */
-SELECT city_code, city_name, cities.country_code, country_name 
+SELECT *
 FROM cities JOIN countries ON cities.country_code = countries.country_code;
 
 /* Afficher les pays avec les noms des villes associées
