@@ -5,51 +5,98 @@
 	Chaque client est associé à un commercial différent 
     
 3) 	Sélectionnez tous les clients (nom du commercial associé inclus)
+
+
+SUITE 
+
+4) Créer la table de liaison entre clients et trips
+	nom de la table : orders 
+    order_quantity & order_paid sont des colonnes de la tables de liaison (orders)
+    
+5) (bonus) créer une requête SELECT pour afficher : les voyages avec le nom du client associé
+
 */
-
-DROP DATABASE IF EXISTS usal37_agence;
-
-CREATE DATABASE usal37_agence DEFAULT CHARACTER SET 'utf8mb4' COLLATE 'utf8mb4_unicode_ci';
 
 use usal37_agence;
 
-CREATE TABLE clients(
-   client_id INT auto_increment,
-   client_lastname VARCHAR(50) NOT NULL,
-   client_firstname VARCHAR(50) NOT NULL,
-   client_email VARCHAR(50) NOT NULL,
-   client_phone VARCHAR(50) NOT NULL,
-   client_added DATE NOT NULL,
-   client_password VARCHAR(50) NOT NULL,
-   com_code INT NOT NULL,
-   PRIMARY KEY(client_id),
-   FOREIGN KEY(com_code) REFERENCES sales(com_code)
+
+CREATE TABLE sales 
+(
+	com_code CHAR(5) PRIMARY KEY,
+    com_name VARCHAR(64),
+    com_password CHAR(60)
 );
 
-CREATE TABLE sales(
-   com_code INT,
-   com_name VARCHAR(50) NOT NULL,
-   com_password VARCHAR(50) NOT NULL,
-   PRIMARY KEY(com_code)
-);
-
-INSERT INTO sales
+INSERT INTO sales 
 (com_code, com_name, com_password) 
 VALUES 
-('1855', 'Morice groffi', '*****'),
-('5645', 'jack toco', '*******'),
-('249651', 'jean calvin', '******'),
-('42241', 'ludovic didin', '******'),
-('46542132', 'séverine carto', '******');
+('BA201', 'Berthier Aline', '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi'),
+('NJ247', 'Neymar Jean', '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi'),
+('PJ714', 'Paute Jessie', '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi'),
+('PM654', 'Poglio Marcel', '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi'),
+('YT023', 'Yoyo Tata', '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi');
 
-INSERT INTO clients
-(client_id, client_lastname, client_firstname, client_email, client_phone, client_added, client_password, com_code) 
+
+CREATE table clients 
+(
+	client_id INT PRIMARY KEY AUTO_INCREMENT,
+    client_lastname VARCHAR(32) NOT NULL,
+    client_firstname VARCHAR(32) NOT NULL,
+    client_email VARCHAR(128) NOT NULL,
+    client_phone CHAR(16) NOT NULL,
+    client_added DATE NOT NULL,
+    client_password CHAR(60) NOT NULL,
+    com_code CHAR(5) NOT NULL, 
+    FOREIGN KEY (com_code) REFERENCES sales(com_code) 
+);
+
+
+INSERT INTO clients 
+(com_code, client_lastname, client_firstname, client_email, client_phone, client_added, client_password) 
 VALUES 
-('15796', 'Langlois', 'Remy', 'RLanglois@gmail.com', '+33 0678419578', '2020-8-24', '*****', '1855'),
-('1468952', 'Leveque', 'SAMUEL', 'SLeveque@gmail.com', '+33 0754129635', '2020-7-12', '*******', '42241'),
-('56231', 'Pelletier', 'MAYRON', 'MPelletier@gmail.com', '+33 0751485236', '2020-12-9', '******', '46542132'),
-('7648952', 'Le Goff', 'GABRIEL', 'GLegoff@gmail.com', '+33 0645812369', '2019-5-17', '*****', '1855'),
-('1385741', 'Remy', 'JULIAN', 'JRemy@gmail.com', '+33 0748421598', '2020-1-28', '*******', '249651');
+('BA201', 'Dupont', 'Ernest', 'a@a.fr', 	'0102030405', NOW(), '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi'), 
+('NJ247', 'Dupond', 'Louis', 'b@b.fr', 		'0203040506', NOW(), '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi'), 
+('PJ714', 'Martin', 'Léo', 'c@c.fr', 	 	'0312345678', NOW(), '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi'), 
+('PM654', 'Devoldère', 'Mickaël', 'd@d.fr', '0678963214', NOW(), '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi'), 
+('YT023', 'Ben', 'Joe', 'e@e.fr', 			'0698741235', NOW(), '$2y$10$OpUTjAUsVuKtCstwAq5DeOVWPgofb2d2v.tsQuUCIgezmBqiv4fEi');
 
-SELECT * FROM CLIENTS
-JOIN sales ON  clients.com_code = sales.com_code 
+
+CREATE TABLE orders 
+(
+	trip_code INT,
+    client_id INT,
+    order_quantity INT NOT NULL,
+    order_paid TINYINT(1) NULL,
+    PRIMARY KEY (trip_code, client_id)
+);
+
+ALTER TABLE orders 
+	ADD CONSTRAINT fk_orders_trips FOREIGN KEY (trip_code) REFERENCES trips(trip_code),
+    ADD CONSTRAINT fk_orders_client FOREIGN KEY (client_id) REFERENCES clients(client_id);
+
+
+INSERT INTO orders
+(trip_code, client_id, order_quantity, order_paid)
+VALUES 
+(1, 5, 2, 1),
+(2, 5, 3, 0),
+(3, 1, 2, 1);
+
+
+
+SELECT * 
+
+
+
+
+
+
+SELECT * FROM orders;
+
+
+SELECT client_email, client_password FROM clients;
+
+SELECT client_id, client_lastname, client_email, client_phone, client_added, com_code FROM clients;
+
+SELECT * FROM clients 
+JOIN sales ON clients.com_code = sales.com_code; 
