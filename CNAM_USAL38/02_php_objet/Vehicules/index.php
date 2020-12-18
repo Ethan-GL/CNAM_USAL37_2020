@@ -24,7 +24,7 @@ $v2 = new Voiture();
 
 $v2->setMarque("Honda");
 
-$v2->modele = "2"; // ca plante !
+$v2->setmodele("2");
 
 var_export($v2);
 

@@ -25,6 +25,17 @@ class Voiture
             throw new \Exception("Nom trop court !");
         }
         
+
+    public function setmodele(string $nouveaumodele)
+    {
+        $longueur = strlen($nouveaumodele);
+
+        if($longueur >= 2) {
+            $this->marque = $nouveaumodele;
+        }
+        else {
+            throw new \Exception("Nom trop court !");
+        }
     }
 
 }  // fin de la classe Voiture  
