@@ -1,8 +1,8 @@
-DROP DATABASE IF EXISTS  utf8mb4_unicode_ci;
+DROP DATABASE IF EXISTS  tp_freelancer;
 
-CREATE DATABASE  utf8mb4_unicode_ci DEFAULT CHARACTER SET 'utf8mb4' ;
+CREATE DATABASE  tp_freelancer DEFAULT CHARACTER SET 'utf8mb4' ;
 
-USE  utf8mb4_unicode_ci;
+USE  tp_freelancer;
 
 CREATE TABLE customers 
 (
